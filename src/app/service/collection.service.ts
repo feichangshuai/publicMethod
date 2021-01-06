@@ -1,5 +1,5 @@
 // import { type } from "os";
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 @Injectable({
     providedIn: 'root'
 })
@@ -118,28 +118,40 @@ export class CollectionUtil {
      * CollectionUtil.substract(x,y,(li,ri)=>li.a == ri.a); return [{a:1, b:1}]
      * CollectionUtil.substract(x,y,(li,ri)=>li.a == ri.b); return [{a:1, b:1},{a:2,b:2}]
      */
-    static substract<T,R=T>(left:T[],right:R[],identifier:string | ((li:T,ri:R)=> boolean)):Array<T> {
-        if(left == null || right == null || identifier == null) {
+    static substract<T, R = T>(left: T[], right: R[], identifier: string | ((li: T, ri: R) => boolean)): Array<T> {
+        if (left == null || right == null || identifier == null) {
             return left;
         }
         return left.filter(li => {
-            !right.some(ri => typeof identifier === 'function' ? identifier(li,ri):li[identifier] == ri[identifier]);
+            !right.some(ri => typeof identifier === 'function' ? identifier(li, ri) : li[identifier] == ri[identifier]);
         })
     }
     /**
     * 将矩阵打平 （递归+扩展运算符）
     * @param arr
     */
-    static flats<T>(arr:Array<T>):Array<T>{
-        if(Object.prototype.toString.call(arr) != "[object Array]"){return []};
-        let res=[];
-        arr.map(item=>{
-            if(item instanceof Array){
+    static flats<T>(arr: T[]): T[] {
+        if (Object.prototype.toString.call(arr) != "[object Array]") { return [] };
+        let res = [];
+        arr.map(item => {
+            if (item instanceof Array) {
                 res.push(...this.flats(item));
-            }else{
+            } else {
                 res.push(item)
             }
         });
+        return res;
+    };
+    /**
+    * 将矩阵打平 （递归+扩展运算符）
+    * @param arr
+    */
+    flat2(arr) {
+        if (Object.prototype.toString.call(arr) != "[object Array]") { return false };
+
+        let res = arr.reduce((prev, cur) => {
+            return prev.concat(Array.isArray(cur) ? this.flat2(cur) : cur)
+        }, [])
         return res;
     };
     /**
@@ -157,13 +169,18 @@ export class CollectionUtil {
         }
 
     }
-    
+    flat3(arr) {
+        return [].concat(
+            ...arr.map(x => Array.isArray(x) ? this.flat3(x) : x)
+        )
+    };
+
     /**
      * 将矩阵打平去重
      * @param metux
      */
-    static flatAndUnique(metux:any[]) {
-        if(metux.length<1) {
+    static flatAndUnique(metux: any[]) {
+        if (metux.length < 1) {
             return [];
         }
         const platDics = this.flat(metux);
