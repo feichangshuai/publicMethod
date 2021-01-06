@@ -153,7 +153,6 @@ export class CollectionUtil {
         if (depth === 1) {
             return metux.reduce((pre, cur) => pre.concat(cur), [])
         } else {
-            debugger
             return metux.reduce((pre, cur) => { pre.concat(this.flat(cur, depth - 1)), [] })
         }
 
