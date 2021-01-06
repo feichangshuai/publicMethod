@@ -1,5 +1,8 @@
-import { type } from "os";
-
+// import { type } from "os";
+import {Injectable} from '@angular/core';
+@Injectable({
+    providedIn: 'root'
+})
 /**
  * 集合工具类
  */
@@ -123,7 +126,22 @@ export class CollectionUtil {
             !right.some(ri => typeof identifier === 'function' ? identifier(li,ri):li[identifier] == ri[identifier]);
         })
     }
-
+    /**
+    * 将矩阵打平 （递归+扩展运算符）
+    * @param arr
+    */
+    static flats<T>(arr:Array<T>):Array<T>{
+        if(Object.prototype.toString.call(arr) != "[object Array]"){return []};
+        let res=[];
+        arr.map(item=>{
+            if(item instanceof Array){
+                res.push(...this.flats(item));
+            }else{
+                res.push(item)
+            }
+        });
+        return res;
+    };
     /**
     * 将矩阵打平
     * @param metux
@@ -135,10 +153,12 @@ export class CollectionUtil {
         if (depth === 1) {
             return metux.reduce((pre, cur) => pre.concat(cur), [])
         } else {
+            debugger
             return metux.reduce((pre, cur) => { pre.concat(this.flat(cur, depth - 1)), [] })
         }
 
     }
+    
     /**
      * 将矩阵打平去重
      * @param metux
