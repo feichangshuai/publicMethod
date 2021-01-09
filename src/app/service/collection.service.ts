@@ -197,3 +197,75 @@ export interface CovertListToTreeOptions {
     // 根节点可能是空，即输入可能是森林，需要创建虚拟根节点
     allowVirtualRoot?: boolean;
 }
+
+
+/** 
+ * *
+ *  @param {number[]} nums 
+ * * @param {number} k 
+ * * @return {number[]} 
+ * */
+class MinMap {
+    constructor() { this.heap = [] }
+    // 获取父节点 
+    getParentIndex() { return (index - 1) >> 1 }
+    // 获取左节点 
+    getLeftIndex() { return (index * 2) + 1; }
+    // 获取右节点 
+    getRightIndex() { return (index * 2) + 2 }
+    // 交换两个节点 
+    swap(i1, i2) { const temp = this.heap[i1]; this.heap[i1] = this.heap[i2]; this.heap[i2] = temp }
+    // 返回堆顶 
+    peek() { return this.heap[0] }
+    // 返回堆的大小 
+    size() { return this.heap.length }
+    // 删除堆顶部 
+    pop() {
+        this.heap[0] = this.heap[this.heap.length - 1];
+        this.shiftDown(0)
+    }
+    //上移动操作 
+    shiftUp(index) {
+        // 边界判断 
+        if (index === 0) { return }
+        const parentIndex = this.getParentIndex(index);
+        if (this.heap[parentIndex] > this.heap[index]) {
+            this.swap(parentIndex, index);
+            this.shiftUp(parentIndex)
+        }
+    }
+    // 下移操作 
+    shiftDown(index) {
+        if (index === this.heap.length - 1) return;
+        const leftIndex = this.getLeftIndex(index);
+        const rightIndex = this.getRightIndex(index);
+        if (this.heap[leftIndex] < this.heap[index]) {
+            this.swap(index, leftIndex);
+            this.shiftDown(leftIndex);
+        }
+        if (this.heap[rightIndex] < this.heap[index]) {
+            this.swap(index, rightIndex); this.shiftDown(rightIndex)
+        }
+    }
+    // 插入 
+    insert(value) {
+        this.heap.push(value);
+        this.shiftUp(this.heap.length - 1);
+    }
+}
+// 第一步：记录每个元素出现到频率 
+var topKFrequent = function (nums, k) {
+    let numsMap = new Map();
+    let arr = [] nums.forEach(item => {
+        // 
+        if (!numsMap.has(item)) {
+            // 
+            numsMap.set(item, 1) // 
+        } else { // 
+            numsMap.set(item, numsMap.get(item) + 1) // 
+        } numsMap.set(item, numsMap.has(item) ? numsMap.get(item) + 1 : 1)
+    })
+    // map转数组排序(降序) 
+    const list = Array.from(numsMap).sort((a, b) => b[1] - a[1])
+    return list.slice(0, k).map(item => item[0])
+};
