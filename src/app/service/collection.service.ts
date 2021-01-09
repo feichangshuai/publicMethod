@@ -200,11 +200,11 @@ export interface CovertListToTreeOptions {
 
 
 /** 
- * *
+ *  大顶堆
  *  @param {number[]} nums 
- * * @param {number} k 
- * * @return {number[]} 
- * */
+ *  @param {number} k 
+ *  @return {number[]} 
+ */
 class MinMap {
     constructor() { this.heap = [] }
     // 获取父节点 
