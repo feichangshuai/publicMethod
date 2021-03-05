@@ -24,3 +24,30 @@
         }
         return _deepCopy(target);
     }
+    /**
+ * 比较对象是否相等
+ * @param x 
+ * @param y 
+ */
+export const deepEqual = (x, y) => {
+    // 指向同一内存时
+    if (x === y) {
+      return true;
+          /* eslint-disable-next-line */
+    } else if ((typeof x == "object" && x != null) && (typeof y == "object" && y != null)) {
+      if (Object.keys(x).length !== Object.keys(y).length) {
+        return false;
+      }
+          /* eslint-disable-next-line */
+      for (var prop in x) {
+        if (y.hasOwnProperty(prop)) {  
+          if (!deepEqual(x[prop], y[prop])) return false;
+        } else {
+          return false;
+        }
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }
