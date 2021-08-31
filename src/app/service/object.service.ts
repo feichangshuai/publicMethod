@@ -46,3 +46,29 @@ export function loopEnumWithKey<T>(e:T): ({key:Array<any>,value:Array<any>}) {
     const key = value.map(t => {return e[t]},[])
     return {key: key,value: value}
 }
+/**
+ * 将枚举转换为{ [key: string]: any }的对象
+ * @param e enum
+ * @returns key value
+ * @example
+enum DimensionTypes {
+  普通维度 = 'dimension-normal',
+  枚举维度 = 'dimension-enum',
+  层级维度 = 'dimension-hierarchy',
+}
+enum DimensionTypes {
+  普通维度,
+  枚举维度,
+  层级维度,
+}
+ */
+export function loopEnums<T>(e: T): { [key: string]: any } {
+  if (typeof e !== 'object' || e === null) { return {} };
+  const re:any = {}
+  const data = Object.keys(e);
+  data.map((da:any) => {
+      if (!isNaN(+da)) { return }
+      re[da] = (e as any)[da]
+  })
+  return re;
+}
